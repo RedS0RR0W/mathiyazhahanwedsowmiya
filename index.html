@@ -20,9 +20,7 @@
 
     /* responsive type scale (tuned for mobile) */
     --title-lg:clamp(1.05rem, 2.8vw, 1.45rem);
-    --hero-name-size:clamp(1.4rem, 6vw, 2.6rem);
-    --hero-connector-size:clamp(.86rem, 2.6vw, 1.05rem);
-    --heart-size:clamp(1.1rem, 4.6vw, 1.6rem);
+    --hero-name:clamp(1.6rem, 6.2vw, 2.8rem);
     --section-title:clamp(1.05rem, 3.4vw, 1.25rem);
     --lead-size:clamp(.88rem, 2.6vw, 1rem);
     --card-h3:clamp(.96rem, 3.2vw, 1.12rem);
@@ -33,17 +31,18 @@
 
   *{box-sizing:border-box}
   html,body{
+    /* MIXED vibrant gradient with multi-layer depth + enhanced effects */
     background:
       radial-gradient(circle at 20% 10%, rgba(255,255,255,0.12), transparent 60%),
       radial-gradient(circle at 80% 90%, rgba(255,255,255,0.10), transparent 55%),
       linear-gradient(180deg,
-        #ff174f 0%,
-        #ff4f8b 16%,
-        #ff7acb 32%,
-        #ff9ee6 48%,
-        #7fc8ff 64%,
-        #4fb6ff 82%,
-        #82d2ff 100%
+        #ff174f 0%,        /* vibrant red */
+        #ff4f8b 16%,       /* red‑pink */
+        #ff7acb 32%,       /* bright pink */
+        #ff9ee6 48%,       /* soft pink */
+        #7fc8ff 64%,       /* light blue */
+        #4fb6ff 82%,       /* brighter light blue */
+        #82d2ff 100%       /* soft aqua‑blue */
       );
 
     background-size: 140% 140%, 160% 160%, 100% 200%;
@@ -60,6 +59,7 @@
     overflow-x:hidden;
   }
 
+  /* subtle vignette + glossy sheen overlay */
   .page::before{
     content:'';position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:0;
     background:radial-gradient(60% 40% at 10% 10%, rgba(255,255,255,0.06), transparent 12%),
@@ -69,6 +69,7 @@
   }
 
   .page::after{
+    /* light diagonal streaks */
     content:'';position:fixed;left:-40%;top:-20%;width:180%;height:140%;pointer-events:none;z-index:0;
     background:linear-gradient(120deg, rgba(255,255,255,0.015) 0%, rgba(255,255,255,0.0) 20%, rgba(255,255,255,0.015) 40%, rgba(255,255,255,0.0) 60%, rgba(255,255,255,0.02) 100%);
     transform:skewY(-10deg);
@@ -77,93 +78,111 @@
     opacity:0.9;
   }
 
+  /* small animated sparkles layer using CSS gradients */
+  .gradient-sparkles{position:fixed;inset:0;pointer-events:none;z-index:0;mix-blend-mode:screen;opacity:0.9}
+  .gradient-sparkles::before, .gradient-sparkles::after{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 35%);filter:blur(40px);opacity:0.6}
+  .gradient-sparkles::before{left:6%;top:8%;transform:translateZ(0);animation: sparkleDrift 14s ease-in-out infinite}
+  .gradient-sparkles::after{right:8%;bottom:10%;transform:translateZ(0);animation: sparkleDrift 19s ease-in-out infinite reverse}
+
   @keyframes mixedFlow{
+    /* Background gradient runs on its own course (no syncing) */
     0%{ background-position:30% 0%, 80% 100%, 50% 0%; }
     50%{ background-position:70% 100%, 20% 0%, 50% 100%; }
     100%{ background-position:30% 0%, 80% 100%, 50% 0%; }
+  }25%{
+      background-position:60% 30%, 40% 60%, 50% 30%;
+      filter: hue-rotate(20deg) brightness(1.08);
+    }
+    50%{
+      background-position:70% 100%, 20% 0%, 50% 100%;
+      filter: hue-rotate(40deg) brightness(1.12);
+    }
+    75%{
+      background-position:45% 60%, 70% 30%, 50% 60%;
+      filter: hue-rotate(20deg) brightness(1.06);
+    }
+    100%{
+      background-position:30% 0%, 80% 100%, 50% 0%;
+      filter: hue-rotate(0deg) brightness(1);
+    }
   }
 
+  /* sync hero name gradient animation with background */
   @keyframes nameShift{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+    /* Hero title hue rotation only in red → pink → rose */
+    0%{
+      background-position:0% 50%;
+      filter:hue-rotate(0deg);           /* deep red */
+    }
+    33%{
+      background-position:40% 50%;
+      filter:hue-rotate(18deg);          /* hot pink */
+    }
+    66%{
+      background-position:80% 50%;
+      filter:hue-rotate(32deg);          /* rose */
+    }
+    100%{
+      background-position:0% 50%;
+      filter:hue-rotate(0deg);           /* back to red */
+    }
+  }25%{background-position:40% 50%; filter:hue-rotate(20deg);}
+    50%{background-position:100% 50%; filter:hue-rotate(40deg);}
+    75%{background-position:60% 50%; filter:hue-rotate(20deg);}
+    100%{background-position:0% 50%; filter:hue-rotate(0deg);}50%{background-position:70% 100%, 20% 0%, 50% 100%}
+    100%{background-position:30% 0%, 80% 100%, 50% 0%}
   }
 
   @keyframes streakMove{0%{transform:translateX(-10%) skewY(-10deg)}50%{transform:translateX(10%) skewY(-10deg)}100%{transform:translateX(-10%) skewY(-10deg)}}
   @keyframes sheen{0%{opacity:0.85;background-position:0% 0%}50%{opacity:0.95;background-position:100% 100%}100%{opacity:0.85;background-position:0% 0%}}
+  @keyframes sparkleDrift{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}100%{transform:translateY(0) scale(1)}}
+    50%{background-position:70% 100%, 20% 0%, 50% 100%}
+    100%{background-position:30% 0%, 80% 100%, 50% 0%}
+  }
+
+  @keyframes verticalFlow{
+    0%{background-position:50% 0%}
+    50%{background-position:50% 100%}
+    100%{background-position:50% 0%}
+  }
+  @keyframes bgFlow{0%{background-position:0% 50%,0% 50%}50%{background-position:100% 50%,100% 50%}100%{background-position:0% 50%,0% 50%}}
 
   a{color:inherit;text-decoration:none}
   h1,h2,h3,h4{margin:0}
 
+  /* centered page container */
   .page{width:100%;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:28px 18px}
 
-  .column{width:100%;max-width:var(--maxw);background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,252,0.96));border-radius:16px;padding:20px;box-shadow:0 18px 40px rgba(29,14,22,0.12);display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+  .column{width:100%;max-width:var(--maxw);background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,252,0.96));border-radius:16px;padding:20px;box-shadow:0 18px 40px rgba(29,14,22,0.12);display:flex;flex-direction:column;gap:12px;position:relative}
 
+  /* top title */
   .title{font-family:var(--font-head);font-size:var(--title-lg);text-align:center;color:#5f1630;margin:6px 0 6px;line-height:1}
   .title-deco{height:6px;width:140px;border-radius:999px;margin:6px auto 10px;background:linear-gradient(90deg,#ffd6e8,#ff8fcf,#ff5aa0)}
 
-  /* HERO */
-  .hero{background:var(--card);padding:18px;border-radius:12px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,0.06);position:relative;overflow:visible}
-  .hero-art{position:absolute;right:12px;top:8px;width:94px;height:auto;opacity:0.08;pointer-events:none;border-radius:8px} /* decorative uploaded image */
+  .hero{background:var(--card);padding:14px;border-radius:12px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,0.06);position:relative;overflow:visible}
+  .hero h1{font-family:var(--font-head);font-size:var(--hero-name);margin:4px 0 6px;display:inline-block;position:relative;z-index:2;background:linear-gradient(90deg,#ff6aa6,#ff2a7a,#c44bff);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:nameShift 8s linear infinite, namePulse 4s ease-in-out infinite;transition:transform .32s ease, filter .32s ease; text-shadow:0 6px 18px rgba(196,42,102,0.12), 0 2px 6px rgba(196,42,102,0.06);}
+.hero:hover h1{transform:translateY(-6px) scale(1.02) rotate(-0.5deg);filter:drop-shadow(0 10px 28px rgba(197,58,120,0.16));}
 
-  .hero h1{font-family:var(--font-head);margin:2px 0 6px;display:inline-block;position:relative;z-index:2;line-height:1.06;white-space:nowrap}
-  .hero .hero-line {display:inline-flex;align-items:center;gap:12px;flex-wrap:nowrap}
 
-  .hero .name {
-    font-size:var(--hero-name-size);
-    font-weight:600;
-    background:linear-gradient(90deg,#ff6aa6,#ff2a7a,#c44bff);
-    background-size:300% 300%;
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    animation:nameShift 8s linear infinite, namePulse 4s ease-in-out infinite;
-    text-shadow:0 6px 18px rgba(196,42,102,0.10), 0 2px 6px rgba(196,42,102,0.04);
-    display:inline-block;
-  }
+  @keyframes nameShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-  .hero .connector {
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    font-size:var(--hero-connector-size);
-    color:#6b1736;
-    font-weight:500;
-    letter-spacing:0.6px;
-    background:linear-gradient(90deg,#fff 0%, rgba(255,255,255,0.0) 100%);
-    padding:6px 8px;
-    border-radius:999px;
-    transform:translateY(-1px);
-    opacity:0.98;
-  }
+  .hero p{font-size:var(--lead-size);color:#6b4a4a;margin:4px 0 8px}
+  .meta-card{display:inline-block;background:linear-gradient(180deg,#fff,#fff);padding:8px 12px;border-radius:12px;box-shadow:0 8px 18px rgba(0,0,0,0.06);font-size:.9rem;border:1px solid rgba(0,0,0,0.04);margin-top:6px}
 
-  .hero .connector .heart {
-    font-size:var(--heart-size);
-    display:inline-block;
-    transform-origin:center;
-    animation: heartBeat 1.8s ease-in-out infinite;
-    filter:drop-shadow(0 6px 18px rgba(255,42,122,0.12));
-    margin-left:2px;
-  }
-
-  @keyframes heartBeat{
-    0%{transform:scale(1)}
-    40%{transform:scale(1.14)}
-    70%{transform:scale(0.98)}
-    100%{transform:scale(1)}
-  }
-
-  .hero p{font-size:var(--lead-size);color:#6b4a4a;margin:8px 0 12px}
-  .meta-card{display:inline-block;background:linear-gradient(180deg,#fff,#fff);padding:8px 12px;border-radius:12px;box-shadow:0 8px 18px rgba(0,0,0,0.06);font-size:.95rem;border:1px solid rgba(0,0,0,0.04);margin-top:6px}
-
+  /* section headings tightened spacing */
   .section-title{font-family:var(--font-head);font-size:var(--section-title);text-align:center;color:#6b1736;margin:8px 0 6px;position:relative}
   .section-title::after{content:'';display:block;height:6px;width:86px;border-radius:999px;margin:6px auto 0;background:linear-gradient(90deg,#ffd7e6,#ff7aa6);opacity:.98}
   .lead{font-size:var(--lead-size);color:#6b4a4a;text-align:center;margin:0 0 10px}
 
+  /* cards */
   .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 10px 24px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04);transition:transform .28s ease,box-shadow .28s ease}
   .card:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(0,0,0,0.08)}
   .card h3{font-size:var(--card-h3);margin:0 0 8px;font-family:var(--font-head);color:#532033}
   .card p{font-size:var(--body-size);margin:4px 0;color:#442a32;line-height:1.45}
+
+  /* small tweaks for event title spacing */
+  .card h3.emoji{display:flex;align-items:center;gap:10px}
+  .card h3 .emoji-mark{font-size:1.05rem}
 
   .countdown-box{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,0.07)}
   .count-items{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;margin-top:8px}
@@ -173,17 +192,25 @@
 
   footer{font-size:0.9rem;text-align:center;color:#5b3a3c;margin-top:6px}
 
-  .column::before, .column::after{content:'';position:absolute;pointer-events:none;background-repeat:no-repeat;background-size:120px 120px;opacity:.12}
-  .column::before{left:-10px;top:-10px;background-image:radial-gradient(circle at 20% 30%, rgba(255,255,255,0.12), transparent), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><g fill="%23ff6aa6"><circle cx="20" cy="20" r="12"/><circle cx="36" cy="12" r="8"/><circle cx="52" cy="20" r="10"/></g></svg>');transform:scale(.95}
+  .card a{display:inline-block;padding:8px 10px;border-radius:8px;background:transparent;margin-top:8px;font-weight:500}
+
+  /* floral corner accents (non-intrusive, decorative) */
+  .column::before, .column::after{content:'';position:absolute;pointer-events:none;background-repeat:no-repeat;background-size:120px 120px;opacity:.14}
+  .column::before{left:-10px;top:-10px;background-image:radial-gradient(circle at 20% 30%, rgba(255,255,255,0.12), transparent), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><g fill="%23ff6aa6"><circle cx="20" cy="20" r="12"/><circle cx="36" cy="12" r="8"/><circle cx="52" cy="20" r="10"/></g></svg>');transform:scale(.95)}
   .column::after{right:-10px;bottom:-10px;background-image:radial-gradient(circle at 80% 70%, rgba(255,255,255,0.10), transparent), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><g fill="%239b4cff"><circle cx="100" cy="100" r="14"/><circle cx="84" cy="92" r="9"/><circle cx="68" cy="100" r="11"/></g></svg>');transform:scale(.95)}
 
-  @media (max-width:780px){:root{--maxw:560px;--pad:14px}.column{padding:14px}.title{font-size:clamp(.98rem,3.6vw,1.12rem)}.hero{padding:12px}.hero-art{width:76px}.card{padding:12px} .hero h1{white-space:normal;}}
-  @media (max-width:420px){:root{--maxw:360px}.column{padding:12px}.title{font-size:clamp(.96rem,4.2vw,1.05rem)}.hero .name{font-size:clamp(1.05rem,7.8vw,1.6rem)}.hero .connector{font-size:clamp(.76rem,4.2vw,.98rem)}.hero .connector .heart{font-size:clamp(.95rem,6.4vw,1.4rem)}.card{padding:10px}.meta-card{font-size:.78rem;padding:6px 8px} }
+  @media (max-width:780px){:root{--maxw:560px;--pad:14px}.column{padding:14px}.title{font-size:clamp(.98rem,3.6vw,1.12rem)}.hero{padding:12px}.card{padding:12px}}
+  @media (max-width:420px){:root{--maxw:360px}.column{padding:12px}.title{font-size:clamp(.96rem,4.2vw,1.05rem)}.hero h1{font-size:clamp(1.3rem,8vw,2.2rem)}.card{padding:10px}.meta-card{font-size:.78rem;padding:6px 8px}}
   @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 
-  /* floating heart elements (unchanged) */
+
+  /* additional hero effects: pulse + floating hearts */
+  @keyframes namePulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
   .floating-heart{position:absolute;width:28px;height:28px;pointer-events:none;opacity:0;display:block;z-index:4;animation:heartRise 1.8s ease-out forwards;transform-origin:center;}
+@keyframes heartRise{0%{transform:translateY(0) scale(.65) rotate(-8deg);opacity:1}50%{transform:translateY(-55px) scale(1.05) rotate(4deg);opacity:.95}100%{transform:translateY(-130px) translateX(20px) scale(1.1) rotate(10deg);opacity:0}}
   @keyframes heartRise{0%{transform:translateY(0) scale(.6) rotate(-10deg);opacity:1}60%{transform:translateY(-48px) scale(1) rotate(6deg);opacity:.9}100%{transform:translateY(-110px) translateX(18px) scale(1.05) rotate(12deg);opacity:0}}
+
 </style>
 </head>
 
@@ -195,24 +222,8 @@
       <div class="title-deco" aria-hidden="true"></div>
 
       <section class="hero" aria-labelledby="heroTitle">
-        <!-- decorative artwork from user's uploaded file (local path) -->
-        <img class="hero-art" alt="" aria-hidden="true"
-             src="/mnt/data/WhatsApp Image 2025-11-22 at 11.21.56 PM.jpeg">
-
-        <!-- UPDATED: single centered line: "Mathiyazhahan weds Sowmiya" -->
-        <h1 id="heroTitle" aria-label="Mathiyazhahan weds Sowmiya">
-          <span class="hero-line" role="text" aria-hidden="false">
-            <span class="name">Mathiyazhahan</span>
-            <span class="connector" aria-hidden="true">
-              <span class="heart" aria-hidden="true">❤️</span>
-              <span class="weds">weds</span>
-            </span>
-            <span class="name" aria-hidden="false">Sowmiya</span>
-          </span>
-        </h1>
-
+        <h1 id="heroTitle">Mathiyazhahan <span style="color:var(--accent)">❤️</span> Sowmiya</h1>
         <p>Two families, one celebration — we're delighted to have you join us.</p>
-
         <div class="meta-card" aria-label="Reception and ceremony times">
           <div style="line-height:1.28;text-align:center;font-size:0.95rem">
             <div><strong>Reception</strong> — Nov 30, 2025 • 7:00 PM (Sunday)</div>
@@ -328,14 +339,14 @@
 </script>
 
 <script>
-// floating hearts — improved mobile compatibility (keeps working with new layout)
+// small floating hearts — improved mobile compatibility
 (function(){
   const hero = document.querySelector('.hero');
   if(!hero) return;
 
   let last = 0;
   let active = 0;
-  const MAX_ACTIVE = 8;
+  const MAX_ACTIVE = 8; // avoid too many hearts on small devices
   const THROTTLE_MS = 220;
   const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
@@ -345,20 +356,32 @@
     const heart = document.createElement('div');
     heart.className = 'floating-heart';
     const rect = hero.getBoundingClientRect();
+    // position relative to hero box — clamp to stay inside
     const left = Math.max(6, Math.min(rect.width - 6, clientX - rect.left - 9));
     const top = Math.max(6, Math.min(rect.height - 6, clientY - rect.top - 9));
     heart.style.left = left + 'px';
     heart.style.top = top + 'px';
+
+    // random size and slight horizontal offset for variety
     const s = Math.round((isTouch ? 12 : 12) + Math.random() * (isTouch ? 14 : 16));
     heart.style.width = s + 'px';
     heart.style.height = s + 'px';
+
     heart.innerHTML = '<svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><path d="M23.6 0c-2.9 0-5.3 1.7-6.6 4.1C15.7 1.7 13.3 0 10.4 0 4.7 0 0 4.7 0 10.4c0 6.9 6.9 11.6 15.7 18.7l1.9 1.4 1.9-1.4C25.1 22 32 17.3 32 10.4 32 4.7 27.3 0 23.6 0z" fill="#ff2a7a" stroke="#ff6aa6" stroke-width="1.2"/></svg>';
+
     hero.appendChild(heart);
-    setTimeout(()=>{ if(heart && heart.parentNode) heart.parentNode.removeChild(heart); active = Math.max(0, active-1); },1800);
+
+    // cleanup after animation ends
+    setTimeout(()=>{
+      if(heart && heart.parentNode) heart.parentNode.removeChild(heart);
+      active = Math.max(0, active-1);
+    },1800);
   }
 
   // pointerdown works for both mouse and touch; pointermove we'll use only for non-touch
-  hero.addEventListener('pointerdown', (e)=>{ createHeart(e.clientX, e.clientY); }, {passive:true});
+  hero.addEventListener('pointerdown', (e)=>{
+    createHeart(e.clientX, e.clientY);
+  }, {passive:true});
 
   if(!isTouch){
     hero.addEventListener('pointermove', (e)=>{
@@ -366,6 +389,7 @@
       if(now - last > THROTTLE_MS){ createHeart(e.clientX, e.clientY); last = now; }
     }, {passive:true});
   } else {
+    // on touch devices, also respond to touchstart/tap gestures
     hero.addEventListener('touchstart', (e)=>{
       const t = e.touches && e.touches[0];
       if(t) createHeart(t.clientX, t.clientY);
